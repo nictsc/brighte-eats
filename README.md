@@ -148,7 +148,8 @@ The server-side validator (`validation/leadValidator.ts`) is a pure function —
 - Data resets on server restart (by design for this scope — see storage section above)
 - `store.ts` (an earlier prototype file) is unused and can be deleted
 - No authentication — anyone with the URL can submit leads or read the full list
-- Postcode validation checks against known Australian state/territory ranges but does not cross-validate postcode against a selected state (no state field is collected)
+- Postcode validation checks against known Australian state/territory ranges but does not cross-validate postcode against a selected state (no state field is collected).
+- Postcode validation checks for Australian PO boxes are not included. As an Brighte Eats app, it would be logical business sense to ensure that PO box postcodes are not used for provided services.
 - Mobile validation uses a regex (`^04\d{8}$`) — a library like `libphonenumber-js` would catch more edge cases
 
 ---
@@ -161,9 +162,13 @@ The server-side validator (`validation/leadValidator.ts`) is a pure function —
 - **Backend implementation** — a backend-dev agent implemented the Express API to make the tests pass (green phase); all 31 tests pass
 - **Frontend implementation** — a frontend-dev agent built the React components, wiring the form and list to the real API
 
-**One place where I checked, corrected or rejected AI output:**
+**A few places where I checked, corrected or rejected AI output:**
 
 The tester agent's initial test for the `leadValidator` used `toContain('postcode is invalid')` — but the actual error message I wanted was `'postcode must be a 4-digit Australian postcode'`. I reviewed the test assertions against the planned error messages before handing off to the implementation agent, corrected the expected string, and confirmed the validator implementation matched. If I hadn't reviewed, the tests would have passed with a less informative error message that wouldn't help a user filling in the form.
+
+The initial setup for Australian mobiles was 7-15 digits long with no restriction on the first two numbers. I had to fix up the Australia mobile rules with a 10-digit restriction and ensuring that the first two numbers start with '04".
+
+The intial setup for Australian postcodes was 4-digit restriction. I had to look up the Australian Post postcode data at https://auspost.com.au/business/marketing-and-communications/access-data-and-insights/address-data/postcode-data to ensure that valid Australian postcodes are used in the data validation.
 
 **Any limitation I ran into:**
 
