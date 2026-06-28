@@ -28,7 +28,7 @@ function validate(fields: {
   if (!fields.email.trim()) errors.email = 'Email is required'
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) errors.email = 'Enter a valid email'
   if (!fields.mobile.trim()) errors.mobile = 'Mobile is required'
-  else if (!/^[\d\s+\-()]{7,15}$/.test(fields.mobile)) errors.mobile = 'Mobile is invalid'
+  else if (!/^04\d{8}$/.test(fields.mobile)) errors.mobile = 'Mobile must be a 10-digit Australian mobile starting with 04'
   if (!fields.postcode.trim()) errors.postcode = 'Postcode is required'
   else if (!/^\d{4}$/.test(fields.postcode)) errors.postcode = 'Enter a 4-digit postcode'
   if (fields.services.length === 0) errors.services = 'Select at least one service'

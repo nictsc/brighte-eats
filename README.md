@@ -124,7 +124,7 @@ Validation runs on **both** layers, for different reasons:
 Rules validated on both sides:
 - `name` — required, non-empty
 - `email` — required, valid format (`user@domain.tld`)
-- `mobile` — required, 7–15 digit/symbol characters
+- `mobile` — required, Australian mobile format (04XXXXXXXX — 10 digits starting with 04)
 - `postcode` — required, exactly 4 digits (Australian format)
 - `services` — at least one selected; all values must be `delivery`, `pickup`, or `payment`
 

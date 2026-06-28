@@ -19,12 +19,12 @@ export function validateCreateLead(body: Partial<CreateLeadDto>): ValidationResu
     errors.push('email is invalid')
   }
 
-  // mobile — 7-15 digit/symbol chars
+  // mobile — Australian mobile: 10 digits starting with 04
   if (body.mobile === undefined || body.mobile === null) {
     errors.push('mobile is required')
   } else if (typeof body.mobile === 'string' && body.mobile.trim() === '') {
     errors.push('mobile is required')
-  } else if (typeof body.mobile === 'string' && !/^[\d+\-().]{7,15}$/.test(body.mobile.trim())) {
+  } else if (typeof body.mobile === 'string' && !/^04\d{8}$/.test(body.mobile.trim())) {
     errors.push('mobile is invalid')
   }
 
