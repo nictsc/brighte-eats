@@ -24,6 +24,12 @@ describe('validateCreateLead', () => {
     expect(result.errors).toContain('at least one service must be selected')
   })
 
+  it('rejects a 4-digit postcode that is outside valid Australian ranges', () => {
+    const result = validateCreateLead({ ...validDto, postcode: '0050' })
+    expect(result.valid).toBe(false)
+    expect(result.errors).toContain('postcode is not a valid Australian postcode')
+  })
+
   it('returns errors for invalid data in each field', () => {
     const result = validateCreateLead({
       name: 'Jane',

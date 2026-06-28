@@ -1,5 +1,10 @@
 import { CreateLeadDto, ValidationResult, VALID_SERVICES } from '../types'
 
+function isValidAustralianPostcode(postcode: string): boolean {
+  const n = parseInt(postcode, 10)
+  return (n >= 200 && n <= 299) || (n >= 800 && n <= 999) || (n >= 1000 && n <= 9999)
+}
+
 export function validateCreateLead(body: Partial<CreateLeadDto>): ValidationResult {
   const errors: string[] = []
 
@@ -28,13 +33,15 @@ export function validateCreateLead(body: Partial<CreateLeadDto>): ValidationResu
     errors.push('mobile is invalid')
   }
 
-  // postcode — exactly 4 digits
+  // postcode — exactly 4 digits within a valid Australian range
   if (body.postcode === undefined || body.postcode === null) {
     errors.push('postcode is required')
   } else if (typeof body.postcode === 'string' && body.postcode.trim() === '') {
     errors.push('postcode is required')
   } else if (typeof body.postcode === 'string' && !/^\d{4}$/.test(body.postcode.trim())) {
     errors.push('postcode must be a 4-digit Australian postcode')
+  } else if (typeof body.postcode === 'string' && !isValidAustralianPostcode(body.postcode.trim())) {
+    errors.push('postcode is not a valid Australian postcode')
   }
 
   // services

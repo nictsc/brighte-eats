@@ -35,6 +35,22 @@ describe('RegistrationForm validation', () => {
     expect(mockCreateLead).not.toHaveBeenCalled()
   })
 
+  it('shows "Enter a valid Australian postcode" for a 4-digit postcode outside valid Australian ranges', async () => {
+    const user = userEvent.setup()
+    renderForm()
+
+    await user.type(screen.getByLabelText(/name/i), 'Jane Smith')
+    await user.type(screen.getByLabelText(/email/i), 'jane@example.com')
+    await user.type(screen.getByLabelText(/mobile/i), '0412345678')
+    await user.type(screen.getByLabelText(/postcode/i), '0050')
+    await user.click(screen.getByLabelText(/delivery/i))
+
+    await user.click(screen.getByRole('button', { name: /submit/i }))
+
+    expect(screen.getByText('Enter a valid Australian postcode')).toBeInTheDocument()
+    expect(mockCreateLead).not.toHaveBeenCalled()
+  })
+
   it('shows "Mobile is invalid" when an incorrectly formatted mobile number is submitted', async () => {
     const user = userEvent.setup()
     renderForm()
@@ -47,7 +63,7 @@ describe('RegistrationForm validation', () => {
 
     await user.click(screen.getByRole('button', { name: /submit/i }))
 
-    expect(screen.getByText('Mobile is invalid')).toBeInTheDocument()
+    expect(screen.getByText('Mobile must be a 10-digit Australian mobile starting with 04')).toBeInTheDocument()
     expect(mockCreateLead).not.toHaveBeenCalled()
   })
 })
