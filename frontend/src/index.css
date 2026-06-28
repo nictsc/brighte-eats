@@ -1,0 +1,233 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: #f3f4f6;
+  color: #111827;
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: #00C28C;
+  color: #fff;
+  padding: 1rem 2rem;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .app-main {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 2rem;
+  }
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Form */
+
+.form h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.field label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+input[id="name"],
+input[id="mobile"],
+input[id="postcode"] {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.15s;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #00C28C;
+  box-shadow: 0 0 0 2px rgba(0, 194, 140, 0.2);
+}
+
+.field input[type="email"],
+input[id="email"] {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* reset specificity issues — target all text-like inputs inside .field */
+.field input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.15s;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #00C28C;
+  box-shadow: 0 0 0 2px rgba(0, 194, 140, 0.2);
+}
+
+.checkboxes {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.success {
+  color: #16a34a;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+button[type="submit"] {
+  margin-top: 1.25rem;
+  padding: 0.6rem 1.5rem;
+  background: #00C28C;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background: #00a876;
+}
+
+button[type="submit"]:disabled {
+  background: #80e1c6;
+  cursor: not-allowed;
+}
+
+/* Leads list */
+
+.leads-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.leads-table th,
+.leads-table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.leads-table th {
+  font-weight: 600;
+  background: #f9fafb;
+  color: #374151;
+}
+
+.leads-table tr:last-child td {
+  border-bottom: none;
+}
+
+.leads-table tr:hover td {
+  background: #fafafa;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.services {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  background: #e6faf5;
+  color: #007a58;
+  border: 1px solid #80e1c6;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.state-message {
+  padding: 1rem 0;
+  color: #6b7280;
+}
+
+.state-message.error {
+  color: #dc2626;
+}
+
+h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.25rem;
+}
