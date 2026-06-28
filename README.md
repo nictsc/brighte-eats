@@ -1,12 +1,12 @@
 # Brighte Eats
 
-A full-stack expression-of-interest app built with Node.js (Express) + React. Customers can register interest in Brighte Eats services (delivery, pickup, payment), and staff can view submitted leads in a live list.
+A full-stack expression-of-interest app built with Node.js (Express) + React. Customers can register interest in Brighte Eats services (delivery, pickup, payment); staff can view submitted leads in a live list.
 
 ---
 
 ## How to run
 
-**Prerequisites:** Node.js v18+ and npm installed.
+**Prerequisites** Node.js v18+ and npm installed.
 
 ```bash
 # 1. Clone the repo
@@ -23,7 +23,7 @@ npm run dev
 - API: http://localhost:3001
 - App: http://localhost:5173
 
-**Run tests:**
+**Run tests**
 ```bash
 npm test
 # or directly:
@@ -72,7 +72,7 @@ brighte-eats/
 
 ## What I built
 
-A monorepo with two packages:
+A monorepo with the following packages
 
 **Backend (`/backend`)** — Express + TypeScript REST API
 - `POST /leads` — accepts name, email, mobile, postcode, services; validates and saves a lead
@@ -99,9 +99,15 @@ For this exercise, an in-memory array is the right call for the following reason
 
 The architecture uses a `ILeadRepository` interface, so swapping to a real database means creating a `SqliteLeadRepository` (or Postgres equivalent) that implements the same two methods, and changing **one line** in `app.ts`. No other files change. That's the Open/Closed principle applied directly to storage.
 
-**In a real product I'd use:** PostgreSQL (with a migration tool like Flyway or Knex). SQLite would work for a lightweight single-server deployment.
+**In a real product I'd use** PostgreSQL (with a migration tool like Flyway or Knex). SQLite would work for a lightweight single-server deployment.
 
 ---
+
+## Why I chose TypeScript over JavaScript
+
+TypeScript is used across both the frontend and backend to share type definitions (e.g. Lead, CreateLeadDto) and catch schema mismatches at compile time, reducing the risk of runtime errors from API contract drift.
+
+--
 
 ## Basic safety
 
@@ -121,7 +127,7 @@ Validation runs on **both** layers, for different reasons:
 | **Client (React)** | Instant inline feedback without a network round-trip. Fields show errors as soon as the user submits. |
 | **Server (Express)** | The API is the contract. Any caller — curl, Postman, another frontend — gets rejected if their input is invalid. Client validation is never a substitute. |
 
-Rules validated on both sides:
+Rules validated on both sides
 - `name` — required, non-empty
 - `email` — required, valid format (`user@domain.tld`)
 - `mobile` — required, Australian mobile format (04XXXXXXXX — 10 digits starting with 04)
@@ -148,8 +154,8 @@ The server-side validator (`validation/leadValidator.ts`) is a pure function —
 - Data resets on server restart (by design for this scope — see storage section above)
 - `store.ts` (an earlier prototype file) is unused and can be deleted
 - No authentication — anyone with the URL can submit leads or read the full list
-- Postcode validation checks against known Australian state/territory ranges but does not cross-validate postcode against a selected state (no state field is collected).
-- Postcode validation checks for Australian PO boxes are not included. As an Brighte Eats app, it would be logical business sense to ensure that PO box postcodes are not used for provided services.
+- Postcode validation checks against known Australian state/territory ranges but does not cross-validate postcode against a selected state (no state field is collected)
+- Postcode validation checks for Australian PO boxes are not included. As an Brighte Eats app, it would be logical business sense to ensure that PO box postcodes are not used for the provided services
 - Mobile validation uses a regex (`^04\d{8}$`) — a library like `libphonenumber-js` would catch more edge cases
 
 ---
@@ -159,14 +165,14 @@ The server-side validator (`validation/leadValidator.ts`) is a pure function —
 **Where AI helped:**
 - **Architecture design** — a Plan agent designed the full SOLID file structure before any code was written, identifying that the initial Electron scaffold was wrong for a web app exercise
 - **TDD scaffolding** — a tester agent wrote all failing tests first (red phase), defining the API contract before the implementation existed
-- **Backend implementation** — a backend-dev agent implemented the Express API to make the tests pass (green phase); all 31 tests pass
+- **Backend implementation** — a backend-dev agent implemented the Express API to make the tests pass (green phase)
 - **Frontend implementation** — a frontend-dev agent built the React components, wiring the form and list to the real API
 
 **A few places where I checked, corrected or rejected AI output:**
 
 The tester agent's initial test for the `leadValidator` used `toContain('postcode is invalid')` — but the actual error message I wanted was `'postcode must be a 4-digit Australian postcode'`. I reviewed the test assertions against the planned error messages before handing off to the implementation agent, corrected the expected string, and confirmed the validator implementation matched. If I hadn't reviewed, the tests would have passed with a less informative error message that wouldn't help a user filling in the form.
 
-The initial setup for Australian mobiles was 7-15 digits long with no restriction on the first two numbers. I had to fix up the Australia mobile rules with a 10-digit restriction and ensuring that the first two numbers start with '04".
+The initial setup for Australian mobiles was 7-15 digits long with no restriction on the first two numbers. I had to fix up the Australia mobile rules with a 10-digit restriction and ensuring that the first two numbers start with '04'.
 
 The intial setup for Australian postcodes was 4-digit restriction. I had to look up the Australian Post postcode data at https://auspost.com.au/business/marketing-and-communications/access-data-and-insights/address-data/postcode-data to ensure that valid Australian postcodes are used in the data validation.
 
