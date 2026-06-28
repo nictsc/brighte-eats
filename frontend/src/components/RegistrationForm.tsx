@@ -4,6 +4,11 @@ import { ServiceType } from '../types'
 
 const SERVICES: ServiceType[] = ['delivery', 'pickup', 'payment']
 
+function isValidAustralianPostcode(postcode: string): boolean {
+  const n = parseInt(postcode, 10)
+  return (n >= 200 && n <= 299) || (n >= 800 && n <= 999) || (n >= 1000 && n <= 9999)
+}
+
 interface Props {
   onSuccess: () => void
 }
@@ -31,6 +36,7 @@ function validate(fields: {
   else if (!/^04\d{8}$/.test(fields.mobile)) errors.mobile = 'Mobile must be a 10-digit Australian mobile starting with 04'
   if (!fields.postcode.trim()) errors.postcode = 'Postcode is required'
   else if (!/^\d{4}$/.test(fields.postcode)) errors.postcode = 'Enter a 4-digit postcode'
+  else if (!isValidAustralianPostcode(fields.postcode)) errors.postcode = 'Enter a valid Australian postcode'
   if (fields.services.length === 0) errors.services = 'Select at least one service'
   return errors
 }

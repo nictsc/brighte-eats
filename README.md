@@ -125,7 +125,7 @@ Rules validated on both sides:
 - `name` — required, non-empty
 - `email` — required, valid format (`user@domain.tld`)
 - `mobile` — required, Australian mobile format (04XXXXXXXX — 10 digits starting with 04)
-- `postcode` — required, exactly 4 digits (Australian format)
+- `postcode` — required, valid Australian postcode (4 digits within a known state/territory range)
 - `services` — at least one selected; all values must be `delivery`, `pickup`, or `payment`
 
 The server-side validator (`validation/leadValidator.ts`) is a pure function — no Express imports, no side effects — making it trivially unit-testable independent of HTTP.
@@ -135,7 +135,7 @@ The server-side validator (`validation/leadValidator.ts`) is a pure function —
 ## What I'd change or add with more time
 
 - **Real database** — swap `InMemoryLeadRepository` for a SQLite implementation (data survives server restart)
-- **Frontend tests** — add Vitest + React Testing Library for form validation and loading state coverage
+- **Frontend tests** — add Vitest + React Testing Library for form validation and loading state coverage (done)
 - **Pagination** — `GET /leads` returns everything; at scale it needs `?page=` and `?limit=`
 - **Better mobile validation** — use `libphonenumber-js` to properly validate Australian mobile numbers
 - **Rate limiting** — add `express-rate-limit` to prevent flooding the create-lead endpoint
@@ -148,7 +148,8 @@ The server-side validator (`validation/leadValidator.ts`) is a pure function —
 - Data resets on server restart (by design for this scope — see storage section above)
 - `store.ts` (an earlier prototype file) is unused and can be deleted
 - No authentication — anyone with the URL can submit leads or read the full list
-- Mobile regex accepts some technically invalid formats (any 7–15 char string of digits and symbols)
+- Postcode validation checks against known Australian state/territory ranges but does not cross-validate postcode against a selected state (no state field is collected)
+- Mobile validation uses a regex (`^04\d{8}$`) — a library like `libphonenumber-js` would catch more edge cases
 
 ---
 
